@@ -19,7 +19,8 @@ const translations = {
         exited: "Exited",
         unknown: "Unknown",
         not_injected: "Not Injected",
-        crashed: "Crashed"
+        crashed: "Crashed",
+        refreshed: "Refreshed"
     },
     zh: {
         basic_info: "基本信息",
@@ -39,7 +40,8 @@ const translations = {
         exited: "已退出",
         unknown: "未知",
         not_injected: "未注入",
-        crashed: "已崩溃"
+        crashed: "已崩溃",
+        refreshed: "已刷新"
     }
 };
 
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (refreshBtn) {
         refreshBtn.addEventListener('click', () => {
             fetchAndParseModuleProp();
+            showToast('refreshed');
         });
     }
 
@@ -242,4 +245,22 @@ function updateStatusBadge(elementId, statusKey) {
             if (svg.outerHTML !== ICON_UNKNOWN) svg.outerHTML = ICON_UNKNOWN;
         }
     }
+}
+
+function showToast(messageKey) {
+    const toast = document.querySelector('.toast');
+    const toastText = toast.querySelector('.toast-content span'); // Assuming there is a span inside
+
+    // Fallback if toast structure is simpler
+    const textEl = toastText || toast;
+
+    const message = translations[currentLang][messageKey] || messageKey;
+    textEl.textContent = message;
+
+    toast.classList.remove('hidden');
+
+    // Hide after 3 seconds
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
 }
